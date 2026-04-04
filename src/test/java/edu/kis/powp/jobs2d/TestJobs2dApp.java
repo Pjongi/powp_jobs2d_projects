@@ -10,6 +10,7 @@ import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
+import edu.kis.powp.jobs2d.drivers.RecordingDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.events.SelectLoadSecretCommandOptionListener;
 import edu.kis.powp.jobs2d.events.SelectRunCurrentCommandOptionListener;
@@ -46,11 +47,11 @@ public class TestJobs2dApp {
      */
     private static void setupCommandTests(Application application) {
         application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
-        application.addTest("Load recorded macro", new SelectLoadRecordedMacroOptionListener(DriverFeature.getDriverManager()));
+        application.addTest("Load recorded macro", new SelectLoadRecordedMacroOptionListener());
         application.addTest("Clear panel", new SelectClearPanelOptionListener());
-        application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
+        application.addTest("Run command", new SelectRunCurrentCommandOptionListener());
 
-        edu.kis.powp.jobs2d.drivers.RecordingDriver rec = DriverFeature.getDriverManager().getRecordingDriver();
+        RecordingDriver rec = DriverFeature.getRecordingDriver();
         boolean initial = rec.isRecordingEnabled();
 
         application.addComponentMenuElementWithCheckBox(
@@ -64,7 +65,7 @@ public class TestJobs2dApp {
         );
 
         application.addComponentMenuElement(DriverFeature.class, "Clear recording", (ActionEvent e) -> {
-            DriverFeature.getDriverManager().getRecordingDriver().clearRecorded();
+            DriverFeature.getRecordingDriver().clearRecorded();
             DriverFeature.updateDriverInfo();
         });
     }
@@ -81,7 +82,7 @@ public class TestJobs2dApp {
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
         Job2dDriver driver = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
         DriverFeature.addDriver("Line Simulator", driver);
-        DriverFeature.getDriverManager().setCurrentDriver(driver);
+        DriverFeature.setCurrentDriver(driver);
 
         driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
         DriverFeature.addDriver("Special line Simulator", driver);

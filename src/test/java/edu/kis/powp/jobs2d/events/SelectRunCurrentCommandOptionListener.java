@@ -7,13 +7,11 @@ import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.RecordingDriver;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
+import edu.kis.powp.jobs2d.features.DriverFeature;
 
 public class SelectRunCurrentCommandOptionListener implements ActionListener {
 
-    private DriverManager driverManager;
-
-    public SelectRunCurrentCommandOptionListener(DriverManager driverManager) {
-        this.driverManager = driverManager;
+    public SelectRunCurrentCommandOptionListener() {
     }
 
     @Override
@@ -23,11 +21,11 @@ public class SelectRunCurrentCommandOptionListener implements ActionListener {
             return;
         }
 
-        RecordingDriver rec = driverManager.getRecordingDriver();
+        RecordingDriver rec = DriverFeature.getRecordingDriver();
         boolean previousState = rec.isRecordingEnabled();
         rec.setRecordingEnabled(false);
         try {
-            command.execute(driverManager.getCurrentDriver());
+            command.execute(DriverFeature.getRecordingDriver());
         } finally {
             rec.setRecordingEnabled(previousState);
         }

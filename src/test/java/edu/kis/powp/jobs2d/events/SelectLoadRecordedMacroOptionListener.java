@@ -8,18 +8,17 @@ import java.util.List;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
+import edu.kis.powp.jobs2d.features.DriverFeature;
 
 public class SelectLoadRecordedMacroOptionListener implements ActionListener {
 
-    private final DriverManager driverManager;
 
-    public SelectLoadRecordedMacroOptionListener(DriverManager driverManager) {
-        this.driverManager = driverManager;
+    public SelectLoadRecordedMacroOptionListener() {
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<DriverCommand> recorded = new ArrayList<>(driverManager.getRecordingDriver().getRecordedCommands());
+        List<DriverCommand> recorded = new ArrayList<>(DriverFeature.getRecordingDriver().getRecordedCommands());
         CommandsFeature.getDriverCommandManager().setCurrentCommand(recorded, "RecordedMacro");
     }
 }
