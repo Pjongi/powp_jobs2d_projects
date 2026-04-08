@@ -112,9 +112,9 @@ public class TestJobs2dApp {
 
         Job2dDriver scaledAndRotatedDriver = new TransformingDriver(scaledDriver, rotate, "Transform: Scaled 2x & Rotated 45");
         DriverFeature.addDriver(scaledAndRotatedDriver.toString(), scaledAndRotatedDriver);
-
         UsageMonitorDriver monitoredDriver = new UsageMonitorDriver(driver);
-        monitoredDriver.addSubscriber(new LoggerUsageSubscriber());
+
+        monitoredDriver.getPublisher().addSubscriber(new LoggerUsageSubscriber(monitoredDriver));
         DriverFeature.addDriver("Line Simulator (Monitored)", monitoredDriver);
 
     }
