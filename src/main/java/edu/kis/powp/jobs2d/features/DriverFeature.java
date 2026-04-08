@@ -27,7 +27,7 @@ public class DriverFeature implements IFeature {
 
     /**
      * Setup jobs2d drivers Plugin and add to application.
-     * 
+     *
      * @param application Application context.
      */
     public static void setupDriverPlugin(Application application) {
@@ -40,7 +40,7 @@ public class DriverFeature implements IFeature {
 
     /**
      * Add driver to context, create button in driver menu.
-     * 
+     *
      * @param name   Button name.
      * @param driver Job2dDriver object.
      */

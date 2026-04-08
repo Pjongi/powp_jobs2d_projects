@@ -10,6 +10,7 @@ import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
+import edu.kis.powp.jobs2d.drivers.RecordingDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.logger.TrackingLoggerDriver;
 import edu.kis.powp.jobs2d.drivers.transformations.*;
@@ -20,6 +21,11 @@ import edu.kis.powp.jobs2d.events.SelectTestFigureOptionListener;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
+import edu.kis.powp.jobs2d.events.SelectLoadRecordedMacroOptionListener;
+import edu.kis.powp.jobs2d.events.SelectClearPanelOptionListener;
+import edu.kis.powp.jobs2d.features.RecordingFeature;
+import edu.kis.powp.jobs2d.events.SelectToggleRecordingOptionListener;
+import edu.kis.powp.jobs2d.events.SelectClearRecordingOptionListener;
 import edu.kis.powp.jobs2d.features.FeaturesManager;
 
 public class TestJobs2dApp {
@@ -47,9 +53,25 @@ public class TestJobs2dApp {
      */
     private static void setupCommandTests(Application application) {
         application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
-
+        application.addTest("Load recorded macro", new SelectLoadRecordedMacroOptionListener());
+        application.addTest("Clear panel", new SelectClearPanelOptionListener());
         application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
+        RecordingDriver rec = RecordingFeature.getRecordingDriver();
+        boolean initial = rec.isRecordingEnabled();
+
+        application.addComponentMenuElementWithCheckBox(
+                DriverFeature.class,
+                "Recording",
+                new SelectToggleRecordingOptionListener(rec),
+                initial
+        );
+
+        application.addComponentMenuElement(
+                DriverFeature.class,
+                "Clear recording",
+                new SelectClearRecordingOptionListener()
+        );
     }
 
     /**
@@ -138,6 +160,7 @@ public class TestJobs2dApp {
                 FeaturesManager.setupAllFeatures(app);
 
                 setupDrivers(app);
+                RecordingFeature.setup(DriverFeature.getDriverManager());
                 setupPresetTests(app);
                 setupCommandTests(app);
                 setupLogger(app);
